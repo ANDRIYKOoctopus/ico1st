@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+interface IERC20 {
+    function transfer(address recipient, uint256 amount) external returns (bool);
+}
+
+contract TokenSale {
+    IERC20 public token;
+    uint256 public price = 0.001 ether; // 1 token = 0.001 ETH
+
+    constructor(address tokenAddress) {
+        token = IERC20(tokenAddress);
+    }
+
+    function buyTokens(uint256 numTokens) public payable {
+        require(msg.value == numTokens * price, "Incorrect ETH amount sent");
+        token.transfer(msg.sender, numTokens);
+    }
+}
